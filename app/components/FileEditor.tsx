@@ -86,38 +86,52 @@ export default function FileEditor({ filePath, onClose }: FileEditorProps) {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="h-12 border-b border-gray-800 flex items-center px-4 justify-between">
+      {/* Header */}
+      <div className="h-12 border-b border-jarvis-border flex items-center px-4 justify-between glass">
         <div className="flex items-center gap-3">
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-white"
+            className="text-jarvis-muted hover:text-jarvis-accent transition-colors cursor-pointer p-1 rounded hover:bg-jarvis-accent/10"
           >
-            x
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
           </button>
-          <span className="text-sm text-gray-300">{filePath}</span>
-          {modified && <span className="text-yellow-400 text-sm">*</span>}
+          <div className="flex items-center gap-2">
+            <svg className="w-4 h-4 text-jarvis-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <span className="text-sm text-jarvis-text">{filePath}</span>
+            {modified && (
+              <span className="w-2 h-2 rounded-full bg-jarvis-accent animate-pulse" />
+            )}
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={fetchContent}
-            className="px-3 py-1 text-sm text-gray-400 hover:text-white"
+            className="px-3 py-1.5 text-sm text-jarvis-muted hover:text-jarvis-text transition-colors cursor-pointer rounded hover:bg-jarvis-card"
           >
             Reload
           </button>
           <button
             onClick={handleSave}
             disabled={saving || !modified}
-            className="px-4 py-1 bg-jarvis-blue text-black text-sm font-medium rounded hover:bg-jarvis-blue-dark disabled:opacity-50"
+            className="px-4 py-1.5 bg-jarvis-accent text-jarvis-darker text-sm font-heading font-medium rounded-lg hover:bg-jarvis-accent-dim transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
           >
             {saving ? 'Saving...' : 'Save'}
           </button>
         </div>
       </div>
 
+      {/* Editor */}
       <div className="flex-1">
         {loading ? (
-          <div className="flex items-center justify-center h-full text-gray-400">
-            Loading...
+          <div className="flex items-center justify-center h-full">
+            <div className="flex flex-col items-center gap-3">
+              <div className="w-8 h-8 border-2 border-jarvis-accent/30 border-t-jarvis-accent rounded-full animate-spin" />
+              <p className="text-jarvis-muted text-sm">Loading file...</p>
+            </div>
           </div>
         ) : (
           <Editor
@@ -136,6 +150,8 @@ export default function FileEditor({ filePath, onClose }: FileEditorProps) {
               scrollBeyondLastLine: false,
               wordWrap: 'on',
               padding: { top: 10 },
+              fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+              background: '#0F172A',
             }}
           />
         )}

@@ -20,10 +20,15 @@ export default function Chat({ conversationId, onConversationCreated }: ChatProp
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -95,22 +100,34 @@ export default function Chat({ conversationId, onConversationCreated }: ChatProp
     } catch (error) {
       setMessages((prev) => [
         ...prev,
-        { role: 'assistant', content: 'Failed to get response. Please try again.' },
+        { role: 'assistant', content: 'Connection error. Please try again.' },
       ]);
     } finally {
       setLoading(false);
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(e);
+    }
+  };
+
   return (
     <div className="flex flex-col h-full">
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto p-6 space-y-6">
         {messages.length === 0 && (
           <div className="flex items-center justify-center h-full">
-            <div className="text-center">
-              <div className="text-6xl mb-4">...</div>
-              <h2 className="text-2xl font-bold text-jarvis-blue mb-2">Hello, sir.</h2>
-              <p className="text-gray-400">How can I assist you today?</p>
+            <div className="text-center animate-fade-in">
+              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full border border-jarvis-accent/20 mb-6 glow-green">
+                <svg className="w-10 h-10 text-jarvis-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
+                </svg>
+              </div>
+              <h2 className="font-heading text-2xl font-bold text-jarvis-text mb-2">Good evening, sir.</h2>
+              <p className="text-jarvis-muted text-sm">How may I assist you today?</p>
             </div>
           </div>
         )}
@@ -118,13 +135,13 @@ export default function Chat({ conversationId, onConversationCreated }: ChatProp
         {messages.map((msg, i) => (
           <div
             key={i}
-            className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+            className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-slide-up`}
           >
             <div
-              className={`max-w-[80%] rounded-lg px-4 py-3 ${
+              className={`max-w-[80%] rounded-2xl px-5 py-4 ${
                 msg.role === 'user'
-                  ? 'bg-jarvis-blue text-black'
-                  : 'bg-jarvis-gray text-white'
+                  ? 'bg-jarvis-accent text-jarvis-darker'
+                  : 'bg-jarvis-card border border-jarvis-border text-jarvis-text'
               }`}
             >
               {msg.role === 'assistant' ? (
@@ -138,12 +155,12 @@ export default function Chat({ conversationId, onConversationCreated }: ChatProp
                             style={oneDark}
                             language={match[1]}
                             PreTag="div"
-                            className="rounded-lg"
+                            className="rounded-lg !bg-jarvis-darker !border !border-jarvis-border"
                           >
                             {String(children).replace(/\n$/, '')}
                           </SyntaxHighlighter>
                         ) : (
-                          <code className={className} {...props}>
+                          <code className="bg-jarvis-darker px-1.5 py-0.5 rounded text-jarvis-accent text-sm" {...props}>
                             {children}
                           </code>
                         );
@@ -154,7 +171,7 @@ export default function Chat({ conversationId, onConversationCreated }: ChatProp
                   </ReactMarkdown>
                 </div>
               ) : (
-                <p>{msg.content}</p>
+                <p className="leading-relaxed">{msg.content}</p>
               )}
             </div>
           </div>
@@ -162,25 +179,36 @@ export default function Chat({ conversationId, onConversationCreated }: ChatProp
         <div ref={messagesEndRef} />
       </div>
 
-      <form onSubmit={handleSubmit} className="p-4 border-t border-gray-800">
-        <div className="flex gap-2">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask Jarvis anything..."
-            disabled={loading}
-            className="flex-1 px-4 py-3 bg-jarvis-gray border border-gray-700 rounded-lg focus:outline-none focus:border-jarvis-blue text-white disabled:opacity-50"
-          />
+      {/* Input */}
+      <div className="p-4 border-t border-jarvis-border glass">
+        <form onSubmit={handleSubmit} className="flex gap-3">
+          <div className="flex-1 relative">
+            <textarea
+              ref={inputRef}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Ask Jarvis anything..."
+              disabled={loading}
+              rows={1}
+              className="w-full px-5 py-3.5 bg-jarvis-card border border-jarvis-border rounded-xl focus:outline-none focus:border-jarvis-accent text-jarvis-text placeholder-jarvis-muted/50 resize-none disabled:opacity-50 transition-all duration-200"
+            />
+          </div>
           <button
             type="submit"
             disabled={loading || !input.trim()}
-            className="px-6 py-3 bg-jarvis-blue text-black font-semibold rounded-lg hover:bg-jarvis-blue-dark transition-all disabled:opacity-50"
+            className="px-6 py-3.5 bg-jarvis-accent text-jarvis-darker font-heading font-semibold rounded-xl hover:bg-jarvis-accent-dim transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer glow-green-hover"
           >
-            {loading ? '...' : 'Send'}
+            {loading ? (
+              <div className="w-5 h-5 border-2 border-jarvis-darker/30 border-t-jarvis-darker rounded-full animate-spin" />
+            ) : (
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            )}
           </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }

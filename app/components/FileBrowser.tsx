@@ -41,26 +41,41 @@ export default function FileBrowser({ onSelectFile }: FileBrowserProps) {
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   };
 
+  const getFileIcon = (name: string, isDirectory: boolean) => {
+    if (isDirectory) return 'M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z';
+    const ext = name.split('.').pop()?.toLowerCase();
+    const icons: Record<string, string> = {
+      ts: 'M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4',
+      tsx: 'M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4',
+      js: 'M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z',
+      json: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
+      md: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
+      css: 'M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z',
+    };
+    return icons[ext || ''] || 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z';
+  };
+
   const pathParts = currentPath ? currentPath.split('/').filter(Boolean) : [];
 
   return (
     <div className="h-full flex flex-col">
-      <div className="p-4 border-b border-gray-800">
-        <div className="flex items-center gap-2 text-sm">
+      {/* Breadcrumb */}
+      <div className="p-4 border-b border-jarvis-border glass">
+        <div className="flex items-center gap-1 text-sm">
           <button
             onClick={() => setCurrentPath('')}
-            className="text-jarvis-blue hover:underline"
+            className="text-jarvis-accent hover:text-jarvis-accent-dim transition-colors cursor-pointer px-2 py-1 rounded hover:bg-jarvis-accent/10"
           >
             workspace
           </button>
           {pathParts.map((part, i) => (
-            <span key={i} className="flex items-center gap-2">
-              <span className="text-gray-500">/</span>
+            <span key={i} className="flex items-center gap-1">
+              <svg className="w-3 h-3 text-jarvis-muted/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
               <button
-                onClick={() =>
-                  setCurrentPath(pathParts.slice(0, i + 1).join('/'))
-                }
-                className="text-jarvis-blue hover:underline"
+                onClick={() => setCurrentPath(pathParts.slice(0, i + 1).join('/'))}
+                className="text-jarvis-accent hover:text-jarvis-accent-dim transition-colors cursor-pointer px-2 py-1 rounded hover:bg-jarvis-accent/10"
               >
                 {part}
               </button>
@@ -69,26 +84,36 @@ export default function FileBrowser({ onSelectFile }: FileBrowserProps) {
         </div>
       </div>
 
+      {/* File list */}
       <div className="flex-1 overflow-y-auto">
         {loading ? (
-          <div className="p-4 text-center text-gray-400">Loading...</div>
+          <div className="flex flex-col items-center justify-center h-full gap-3">
+            <div className="w-8 h-8 border-2 border-jarvis-accent/30 border-t-jarvis-accent rounded-full animate-spin" />
+            <p className="text-jarvis-muted text-sm">Loading files...</p>
+          </div>
         ) : files.length === 0 ? (
-          <div className="p-4 text-center text-gray-400">Empty directory</div>
+          <div className="flex flex-col items-center justify-center h-full gap-3">
+            <svg className="w-12 h-12 text-jarvis-muted/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+            </svg>
+            <p className="text-jarvis-muted text-sm">Empty directory</p>
+          </div>
         ) : (
-          <div className="divide-y divide-gray-800">
+          <div className="divide-y divide-jarvis-border/50">
+            {/* Parent directory */}
             {currentPath && (
               <button
-                onClick={() =>
-                  setCurrentPath(
-                    pathParts.slice(0, -1).join('/')
-                  )
-                }
-                className="w-full px-4 py-3 flex items-center gap-3 hover:bg-jarvis-gray text-left"
+                onClick={() => setCurrentPath(pathParts.slice(0, -1).join('/'))}
+                className="w-full px-5 py-3 flex items-center gap-3 hover:bg-jarvis-card/50 text-left transition-colors cursor-pointer"
               >
-                <span className="text-gray-400">..</span>
-                <span className="text-gray-400 text-sm">Parent directory</span>
+                <svg className="w-4 h-4 text-jarvis-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+                <span className="text-jarvis-muted text-sm">..</span>
               </button>
             )}
+
+            {/* Files */}
             {files.map((file) => (
               <button
                 key={file.path}
@@ -99,16 +124,14 @@ export default function FileBrowser({ onSelectFile }: FileBrowserProps) {
                     onSelectFile(file.path);
                   }
                 }}
-                className="w-full px-4 py-3 flex items-center gap-3 hover:bg-jarvis-gray text-left"
+                className="w-full px-5 py-3 flex items-center gap-3 hover:bg-jarvis-card/50 text-left transition-colors cursor-pointer group"
               >
-                <span className="text-jarvis-blue font-mono">
-                  {file.isDirectory ? '/' : '.'}
-                </span>
-                <span className="flex-1 truncate">{file.name}</span>
+                <svg className={`w-4 h-4 ${file.isDirectory ? 'text-jarvis-blue' : 'text-jarvis-accent'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={getFileIcon(file.name, file.isDirectory)} />
+                </svg>
+                <span className="flex-1 truncate text-jarvis-text group-hover:text-jarvis-accent transition-colors">{file.name}</span>
                 {!file.isDirectory && (
-                  <span className="text-gray-500 text-sm">
-                    {formatSize(file.size)}
-                  </span>
+                  <span className="text-jarvis-muted/50 text-xs">{formatSize(file.size)}</span>
                 )}
               </button>
             ))}

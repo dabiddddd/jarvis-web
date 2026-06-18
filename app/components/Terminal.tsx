@@ -10,7 +10,7 @@ interface TerminalLine {
 export default function Terminal() {
   const [lines, setLines] = useState<TerminalLine[]>([
     { type: 'output', content: 'Jarvis Terminal v1.0' },
-    { type: 'output', content: 'Type commands below. Type "clear" to clear screen.' },
+    { type: 'output', content: 'Type "clear" to clear screen.' },
     { type: 'output', content: '' },
   ]);
   const [input, setInput] = useState('');
@@ -100,26 +100,38 @@ export default function Terminal() {
   return (
     <div
       ref={containerRef}
-      className="h-full bg-black p-4 overflow-y-auto font-mono text-sm cursor-text"
+      className="h-full bg-jarvis-darker p-4 overflow-y-auto cursor-text"
       onClick={() => inputRef.current?.focus()}
     >
+      {/* Terminal header */}
+      <div className="flex items-center gap-2 mb-4 pb-3 border-b border-jarvis-border/50">
+        <div className="flex gap-1.5">
+          <div className="w-3 h-3 rounded-full bg-red-500/80" />
+          <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
+          <div className="w-3 h-3 rounded-full bg-green-500/80" />
+        </div>
+        <span className="text-jarvis-muted text-xs ml-2 font-mono">terminal</span>
+      </div>
+
+      {/* Output lines */}
       {lines.map((line, i) => (
         <div
           key={i}
-          className={`whitespace-pre-wrap ${
+          className={`font-mono text-sm mb-1 ${
             line.type === 'input'
-              ? 'text-jarvis-blue'
+              ? 'text-jarvis-accent'
               : line.type === 'error'
               ? 'text-red-400'
-              : 'text-gray-300'
+              : 'text-jarvis-text'
           }`}
         >
-          {line.content}
+          <pre className="whitespace-pre-wrap">{line.content}</pre>
         </div>
       ))}
 
+      {/* Input line */}
       <form onSubmit={handleSubmit} className="flex items-center gap-2 mt-1">
-        <span className="text-jarvis-blue">$</span>
+        <span className="text-jarvis-accent font-mono">$</span>
         <input
           ref={inputRef}
           type="text"
@@ -127,10 +139,18 @@ export default function Terminal() {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           disabled={loading}
-          className="flex-1 bg-transparent outline-none text-gray-300 disabled:opacity-50"
+          className="flex-1 bg-transparent outline-none text-jarvis-text font-mono disabled:opacity-50"
           autoFocus
         />
       </form>
+
+      {/* Loading indicator */}
+      {loading && (
+        <div className="flex items-center gap-2 mt-2">
+          <div className="w-2 h-2 rounded-full bg-jarvis-accent animate-pulse" />
+          <span className="text-jarvis-muted text-xs font-mono">processing...</span>
+        </div>
+      )}
     </div>
   );
 }

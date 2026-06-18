@@ -42,7 +42,10 @@ export default function Dashboard() {
   if (status === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-pulse text-jarvis-blue text-2xl">Loading...</div>
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-2 border-jarvis-accent/30 border-t-jarvis-accent rounded-full animate-spin" />
+          <p className="text-jarvis-muted font-heading text-sm tracking-widest">INITIALIZING</p>
+        </div>
       </div>
     );
   }
@@ -72,23 +75,28 @@ export default function Dashboard() {
       />
 
       <main className="flex-1 flex flex-col overflow-hidden">
-        <header className="h-14 border-b border-gray-800 flex items-center px-4 justify-between">
-          <div className="flex items-center gap-3">
-            <span className="text-jarvis-blue font-bold">JARVIS</span>
-            <span className="text-gray-500">|</span>
-            <span className="text-gray-400 text-sm capitalize">{view}</span>
+        {/* Header */}
+        <header className="h-14 border-b border-jarvis-border flex items-center px-6 justify-between glass">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-jarvis-accent animate-pulse" />
+              <span className="font-heading text-sm font-semibold text-jarvis-accent tracking-wider">JARVIS</span>
+            </div>
+            <div className="w-px h-4 bg-jarvis-border" />
+            <span className="text-jarvis-muted text-sm capitalize">{view}</span>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-gray-400 text-sm">{session.user?.email}</span>
+            <span className="text-jarvis-muted text-sm">Sir</span>
             <button
               onClick={() => router.push('/api/auth/signout')}
-              className="text-gray-400 hover:text-white text-sm"
+              className="text-jarvis-muted hover:text-jarvis-accent text-sm transition-colors duration-200 cursor-pointer"
             >
               Sign Out
             </button>
           </div>
         </header>
 
+        {/* Content */}
         <div className="flex-1 overflow-hidden">
           {view === 'chat' && (
             <Chat
