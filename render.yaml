@@ -3,8 +3,8 @@ services:
     name: jarvis-web
     runtime: node
     plan: free
-    buildCommand: npm install && npm run build && npx prisma generate
-    startCommand: npm start
+    buildCommand: npm install && npx prisma generate && npm run build
+    startCommand: npx prisma db push && npm start
     envVars:
       - key: DATABASE_URL
         value: "file:./prod.db"
@@ -19,7 +19,3 @@ services:
         value: "groq"
       - key: GROQ_API_KEY
         sync: false
-    disk:
-      name: workspace
-      mountPath: /app/workspace
-      sizeGB: 1
