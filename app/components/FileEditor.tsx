@@ -151,7 +151,6 @@ export default function FileEditor({ filePath, onClose }: FileEditorProps) {
               wordWrap: 'on',
               padding: { top: 10 },
               fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
-              background: '#0F172A',
             }}
           />
         )}
