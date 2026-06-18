@@ -1,40 +1,29 @@
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { prisma } from './db';
-import bcrypt from 'bcryptjs';
 
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
-      name: 'credentials',
+      name: 'password',
       credentials: {
-        email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error('Email and password required');
+        const correctPassword = process.env.ACCESS_PASSWORD;
+
+        if (!correctPassword) {
+          throw new Error('Access password not configured');
         }
 
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
-        });
-
-        if (!user) {
-          throw new Error('Invalid email or password');
+        if (credentials?.password === correctPassword) {
+          return {
+            id: 'owner',
+            email: 'owner@jarvis.local',
+            name: 'Tony Stark',
+          };
         }
 
-        const isValid = await bcrypt.compare(credentials.password, user.password);
-
-        if (!isValid) {
-          throw new Error('Invalid email or password');
-        }
-
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-        };
+        throw new Error('Invalid password');
       },
     }),
   ],
