@@ -53,74 +53,85 @@ export default function RegisterPage() {
           <p className="text-gray-400">Create your account</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {error && (
-            <div className="p-3 bg-red-500/20 border border-red-500 rounded-lg text-red-400 text-sm">
-              {error}
+        {error === 'Registration is disabled' ? (
+          <div className="text-center">
+            <div className="p-4 bg-jarvis-gray rounded-lg text-gray-300 mb-6">
+              Registration is currently closed.
             </div>
-          )}
-
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
-              Name (optional)
-            </label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-3 bg-jarvis-gray border border-gray-700 rounded-lg focus:outline-none focus:border-jarvis-blue text-white"
-            />
+            <Link href="/login" className="text-jarvis-blue hover:underline">
+              Go to Sign In
+            </Link>
           </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+              <div className="p-3 bg-red-500/20 border border-red-500 rounded-lg text-red-400 text-sm">
+                {error}
+              </div>
+            )}
 
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 bg-jarvis-gray border border-gray-700 rounded-lg focus:outline-none focus:border-jarvis-blue text-white"
-              required
-            />
-          </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Name (optional)
+              </label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full px-4 py-3 bg-jarvis-gray border border-gray-700 rounded-lg focus:outline-none focus:border-jarvis-blue text-white"
+              />
+            </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
-              Password
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-jarvis-gray border border-gray-700 rounded-lg focus:outline-none focus:border-jarvis-blue text-white"
-              required
-              minLength={8}
-            />
-          </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Email
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-3 bg-jarvis-gray border border-gray-700 rounded-lg focus:outline-none focus:border-jarvis-blue text-white"
+                required
+              />
+            </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-jarvis-gray border border-gray-700 rounded-lg focus:outline-none focus:border-jarvis-blue text-white"
-              required
-              minLength={8}
-            />
-          </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Password
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 bg-jarvis-gray border border-gray-700 rounded-lg focus:outline-none focus:border-jarvis-blue text-white"
+                required
+                minLength={8}
+              />
+            </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 bg-jarvis-blue text-black font-semibold rounded-lg hover:bg-jarvis-blue-dark transition-all glow-hover disabled:opacity-50"
-          >
-            {loading ? 'Creating account...' : 'Create Account'}
-          </button>
-        </form>
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full px-4 py-3 bg-jarvis-gray border border-gray-700 rounded-lg focus:outline-none focus:border-jarvis-blue text-white"
+                required
+                minLength={8}
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 bg-jarvis-blue text-black font-semibold rounded-lg hover:bg-jarvis-blue-dark transition-all glow-hover disabled:opacity-50"
+            >
+              {loading ? 'Creating account...' : 'Create Account'}
+            </button>
+          </form>
+        )}
 
         <p className="text-center mt-6 text-gray-400">
           Already have an account?{' '}

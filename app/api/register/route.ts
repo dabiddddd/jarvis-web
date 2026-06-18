@@ -4,12 +4,28 @@ import { prisma } from '@/lib/db';
 
 export async function POST(req: Request) {
   try {
+    const allowedEmail = process.env.OWNER_EMAIL;
+
+    if (!allowedEmail) {
+      return NextResponse.json(
+        { error: 'Registration is disabled' },
+        { status: 403 }
+      );
+    }
+
     const { email, password, name } = await req.json();
 
     if (!email || !password) {
       return NextResponse.json(
         { error: 'Email and password are required' },
         { status: 400 }
+      );
+    }
+
+    if (email.toLowerCase() !== allowedEmail.toLowerCase()) {
+      return NextResponse.json(
+        { error: 'Registration is disabled' },
+        { status: 403 }
       );
     }
 
