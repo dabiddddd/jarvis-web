@@ -117,17 +117,17 @@ export default function Chat({ conversationId, onConversationCreated }: ChatProp
   return (
     <div className="flex flex-col h-full">
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-6">
+      <div className="flex-1 overflow-y-auto p-3 md:p-6 space-y-4 md:space-y-6">
         {messages.length === 0 && (
           <div className="flex items-center justify-center h-full">
             <div className="text-center animate-fade-in">
-              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full border border-jarvis-accent/20 mb-6 glow-green">
-                <svg className="w-10 h-10 text-jarvis-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full border border-jarvis-accent/20 mb-4 md:mb-6 glow-green">
+                <svg className="w-8 h-8 md:w-10 md:h-10 text-jarvis-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
                 </svg>
               </div>
-              <h2 className="font-heading text-2xl font-bold text-jarvis-text mb-2">Good evening, sir.</h2>
-              <p className="text-jarvis-muted text-sm">How may I assist you today?</p>
+              <h2 className="font-heading text-lg md:text-2xl font-bold text-jarvis-text mb-2">Good evening, sir.</h2>
+              <p className="text-jarvis-muted text-xs md:text-sm">How may I assist you today?</p>
             </div>
           </div>
         )}
@@ -138,7 +138,7 @@ export default function Chat({ conversationId, onConversationCreated }: ChatProp
             className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-slide-up`}
           >
             <div
-              className={`max-w-[80%] rounded-2xl px-5 py-4 ${
+              className={`max-w-[85%] md:max-w-[80%] rounded-2xl px-4 py-3 md:px-5 md:py-4 ${
                 msg.role === 'user'
                   ? 'bg-jarvis-accent text-jarvis-darker'
                   : 'bg-jarvis-card border border-jarvis-border text-jarvis-text'
@@ -155,12 +155,12 @@ export default function Chat({ conversationId, onConversationCreated }: ChatProp
                             style={oneDark}
                             language={match[1]}
                             PreTag="div"
-                            className="rounded-lg !bg-jarvis-darker !border !border-jarvis-border"
+                            className="rounded-lg !bg-jarvis-darker !border !border-jarvis-border text-xs md:text-sm"
                           >
                             {String(children).replace(/\n$/, '')}
                           </SyntaxHighlighter>
                         ) : (
-                          <code className="bg-jarvis-darker px-1.5 py-0.5 rounded text-jarvis-accent text-sm" {...props}>
+                          <code className="bg-jarvis-darker px-1.5 py-0.5 rounded text-jarvis-accent text-xs md:text-sm" {...props}>
                             {children}
                           </code>
                         );
@@ -171,7 +171,7 @@ export default function Chat({ conversationId, onConversationCreated }: ChatProp
                   </ReactMarkdown>
                 </div>
               ) : (
-                <p className="leading-relaxed">{msg.content}</p>
+                <p className="leading-relaxed text-sm md:text-base">{msg.content}</p>
               )}
             </div>
           </div>
@@ -180,8 +180,8 @@ export default function Chat({ conversationId, onConversationCreated }: ChatProp
       </div>
 
       {/* Input */}
-      <div className="p-4 border-t border-jarvis-border glass">
-        <form onSubmit={handleSubmit} className="flex gap-3">
+      <div className="p-3 md:p-4 border-t border-jarvis-border glass">
+        <form onSubmit={handleSubmit} className="flex gap-2 md:gap-3">
           <div className="flex-1 relative">
             <textarea
               ref={inputRef}
@@ -191,13 +191,13 @@ export default function Chat({ conversationId, onConversationCreated }: ChatProp
               placeholder="Ask Jarvis anything..."
               disabled={loading}
               rows={1}
-              className="w-full px-5 py-3.5 bg-jarvis-card border border-jarvis-border rounded-xl focus:outline-none focus:border-jarvis-accent text-jarvis-text placeholder-jarvis-muted/50 resize-none disabled:opacity-50 transition-all duration-200"
+              className="w-full px-4 py-3 md:px-5 md:py-3.5 bg-jarvis-card border border-jarvis-border rounded-xl focus:outline-none focus:border-jarvis-accent text-jarvis-text placeholder-jarvis-muted/50 resize-none disabled:opacity-50 transition-all duration-200 text-sm md:text-base"
             />
           </div>
           <button
             type="submit"
             disabled={loading || !input.trim()}
-            className="px-6 py-3.5 bg-jarvis-accent text-jarvis-darker font-heading font-semibold rounded-xl hover:bg-jarvis-accent-dim transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer glow-green-hover"
+            className="px-4 py-3 md:px-6 md:py-3.5 bg-jarvis-accent text-jarvis-darker font-heading font-semibold rounded-xl hover:bg-jarvis-accent-dim transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer glow-green-hover"
           >
             {loading ? (
               <div className="w-5 h-5 border-2 border-jarvis-darker/30 border-t-jarvis-darker rounded-full animate-spin" />

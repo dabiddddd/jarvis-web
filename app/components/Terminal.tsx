@@ -100,7 +100,7 @@ export default function Terminal() {
   return (
     <div
       ref={containerRef}
-      className="h-full bg-jarvis-darker p-4 overflow-y-auto cursor-text"
+      className="h-full bg-jarvis-darker p-3 md:p-4 overflow-y-auto cursor-text"
       onClick={() => inputRef.current?.focus()}
     >
       {/* Terminal header */}
@@ -117,7 +117,7 @@ export default function Terminal() {
       {lines.map((line, i) => (
         <div
           key={i}
-          className={`font-mono text-sm mb-1 ${
+          className={`font-mono text-xs md:text-sm mb-1 ${
             line.type === 'input'
               ? 'text-jarvis-accent'
               : line.type === 'error'
@@ -125,7 +125,7 @@ export default function Terminal() {
               : 'text-jarvis-text'
           }`}
         >
-          <pre className="whitespace-pre-wrap">{line.content}</pre>
+          <pre className="whitespace-pre-wrap break-all">{line.content}</pre>
         </div>
       ))}
 
@@ -139,7 +139,7 @@ export default function Terminal() {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           disabled={loading}
-          className="flex-1 bg-transparent outline-none text-jarvis-text font-mono disabled:opacity-50"
+          className="flex-1 bg-transparent outline-none text-jarvis-text font-mono text-xs md:text-sm disabled:opacity-50"
           autoFocus
         />
       </form>

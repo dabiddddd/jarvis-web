@@ -18,6 +18,7 @@ export default function Dashboard() {
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [conversations, setConversations] = useState<any[]>([]);
   const [activeConversation, setActiveConversation] = useState<string | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -72,21 +73,32 @@ export default function Dashboard() {
           });
           fetchConversations();
         }}
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
       />
 
       <main className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="h-14 border-b border-jarvis-border flex items-center px-6 justify-between glass">
-          <div className="flex items-center gap-4">
+        <header className="h-14 border-b border-jarvis-border flex items-center px-4 md:px-6 justify-between glass">
+          <div className="flex items-center gap-3">
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="md:hidden p-2 text-jarvis-muted hover:text-jarvis-accent transition-colors cursor-pointer"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-jarvis-accent animate-pulse" />
               <span className="font-heading text-sm font-semibold text-jarvis-accent tracking-wider">JARVIS</span>
             </div>
-            <div className="w-px h-4 bg-jarvis-border" />
-            <span className="text-jarvis-muted text-sm capitalize">{view}</span>
+            <div className="w-px h-4 bg-jarvis-border hidden sm:block" />
+            <span className="text-jarvis-muted text-sm capitalize hidden sm:block">{view}</span>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-jarvis-muted text-sm">Sir</span>
+            <span className="text-jarvis-muted text-sm hidden sm:block">Sir</span>
             <button
               onClick={() => router.push('/api/auth/signout')}
               className="text-jarvis-muted hover:text-jarvis-accent text-sm transition-colors duration-200 cursor-pointer"
