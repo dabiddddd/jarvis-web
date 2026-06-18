@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: jarvis-web
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build && npx prisma generate
+    startCommand: npm start
+    envVars:
+      - key: DATABASE_URL
+        value: "file:./prod.db"
+      - key: NEXTAUTH_SECRET
+        generateValue: true
+      - key: NEXTAUTH_URL
+        fromService:
+          name: jarvis-web
+          type: web
+          property: url
+      - key: LLM_PROVIDER
+        value: "groq"
+      - key: GROQ_API_KEY
+        sync: false
+    disk:
+      name: workspace
+      mountPath: /app/workspace
+      sizeGB: 1
