@@ -19,6 +19,18 @@ export async function POST(req: Request) {
 
     const userId = (session.user as any).id;
 
+    // Ensure user exists in database
+    await prisma.user.upsert({
+      where: { id: userId },
+      create: {
+        id: userId,
+        email: 'owner@jarvis.local',
+        name: 'Tony Stark',
+        password: 'authenticated',
+      },
+      update: {},
+    });
+
     // Get or create conversation
     let conversation;
     if (conversationId) {

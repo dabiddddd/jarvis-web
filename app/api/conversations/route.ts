@@ -12,6 +12,18 @@ export async function GET() {
 
     const userId = (session.user as any).id;
 
+    // Ensure user exists in database
+    await prisma.user.upsert({
+      where: { id: userId },
+      create: {
+        id: userId,
+        email: 'owner@jarvis.local',
+        name: 'Tony Stark',
+        password: 'authenticated',
+      },
+      update: {},
+    });
+
     const conversations = await prisma.conversation.findMany({
       where: { userId },
       orderBy: { updatedAt: 'desc' },
