@@ -126,7 +126,7 @@ export default function FileBrowser({ onSelectFile }: FileBrowserProps) {
                 }}
                 className="w-full px-4 md:px-5 py-3 flex items-center gap-3 hover:bg-jarvis-card/50 text-left transition-colors cursor-pointer group"
               >
-                <svg className={`w-4 h-4 shrink-0 ${file.isDirectory ? 'text-jarvis-blue' : 'text-jarvis-accent'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className={`w-4 h-4 shrink-0 ${file.isDirectory ? 'text-jarvis-burgundy' : 'text-jarvis-accent'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={getFileIcon(file.name, file.isDirectory)} />
                 </svg>
                 <span className="flex-1 truncate text-jarvis-text group-hover:text-jarvis-accent transition-colors text-sm">{file.name}</span>

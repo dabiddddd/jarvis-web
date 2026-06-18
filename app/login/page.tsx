@@ -51,7 +51,7 @@ export default function LoginPage() {
       {/* Animated background grid */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
-          backgroundImage: 'linear-gradient(rgba(34, 197, 94, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(34, 197, 94, 0.3) 1px, transparent 1px)',
+          backgroundImage: 'linear-gradient(rgba(218, 145, 1, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(218, 145, 1, 0.3) 1px, transparent 1px)',
           backgroundSize: '50px 50px'
         }} />
       </div>

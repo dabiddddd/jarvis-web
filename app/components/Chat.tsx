@@ -140,7 +140,7 @@ export default function Chat({ conversationId, onConversationCreated }: ChatProp
             <div
               className={`max-w-[85%] md:max-w-[80%] rounded-2xl px-4 py-3 md:px-5 md:py-4 ${
                 msg.role === 'user'
-                  ? 'bg-jarvis-accent text-jarvis-darker'
+                  ? 'bg-jarvis-accent text-white'
                   : 'bg-jarvis-card border border-jarvis-border text-jarvis-text'
               }`}
             >
@@ -197,10 +197,10 @@ export default function Chat({ conversationId, onConversationCreated }: ChatProp
           <button
             type="submit"
             disabled={loading || !input.trim()}
-            className="px-4 py-3 md:px-6 md:py-3.5 bg-jarvis-accent text-jarvis-darker font-heading font-semibold rounded-xl hover:bg-jarvis-accent-dim transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer glow-green-hover"
+            className="px-4 py-3 md:px-6 md:py-3.5 bg-jarvis-accent text-white font-heading font-semibold rounded-xl hover:bg-jarvis-accent-dim transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer glow-green-hover"
           >
             {loading ? (
-              <div className="w-5 h-5 border-2 border-jarvis-darker/30 border-t-jarvis-darker rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
             ) : (
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />

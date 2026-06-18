@@ -9,17 +9,17 @@ module.exports = {
     extend: {
       colors: {
         'jarvis': {
-          'dark': '#0F172A',
-          'darker': '#020617',
-          'card': '#1E293B',
-          'card-hover': '#334155',
-          'accent': '#22C55E',
-          'accent-dim': '#16A34A',
-          'blue': '#38BDF8',
-          'blue-dim': '#0EA5E9',
-          'text': '#F8FAFC',
-          'muted': '#94A3B8',
-          'border': '#334155',
+          'dark': '#F2EAD3',
+          'darker': '#E8DFC8',
+          'card': '#FDF9F0',
+          'card-hover': '#F5ECD6',
+          'accent': '#DA9101',
+          'accent-dim': '#C58200',
+          'burgundy': '#800020',
+          'burgundy-dim': '#660019',
+          'text': '#800020',
+          'muted': '#996666',
+          'border': '#D4C9A8',
         },
       },
       fontFamily: {
@@ -34,8 +34,8 @@ module.exports = {
       },
       keyframes: {
         glow: {
-          '0%': { boxShadow: '0 0 5px rgba(34, 197, 94, 0.5)' },
-          '100%': { boxShadow: '0 0 20px rgba(34, 197, 94, 0.8)' },
+          '0%': { boxShadow: '0 0 5px rgba(218, 145, 1, 0.5)' },
+          '100%': { boxShadow: '0 0 20px rgba(218, 145, 1, 0.8)' },
         },
         fadeIn: {
           '0%': { opacity: '0' },

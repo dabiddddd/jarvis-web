@@ -117,7 +117,7 @@ export default function FileEditor({ filePath, onClose }: FileEditorProps) {
           <button
             onClick={handleSave}
             disabled={saving || !modified}
-            className="px-3 md:px-4 py-1.5 bg-jarvis-accent text-jarvis-darker text-xs md:text-sm font-heading font-medium rounded-lg hover:bg-jarvis-accent-dim transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+            className="px-3 md:px-4 py-1.5 bg-jarvis-accent text-white text-xs md:text-sm font-heading font-medium rounded-lg hover:bg-jarvis-accent-dim transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
           >
             {saving ? 'Saving...' : 'Save'}
           </button>
