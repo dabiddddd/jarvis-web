@@ -148,11 +148,15 @@ async function* streamGroq(
   messages: LLMMessage[],
   options: LLMOptions
 ): AsyncGenerator<string> {
+  const apiKey = process.env.GROQ_API_KEY;
+  console.log('Groq API Key exists:', !!apiKey);
+  console.log('Groq API Key length:', apiKey?.length);
+
   const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
+      Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
       model: options.model || 'llama-3.3-70b-versatile',
@@ -165,6 +169,7 @@ async function* streamGroq(
 
   if (!response.ok) {
     const error = await response.text();
+    console.error('Groq API error:', error);
     throw new Error(`Groq API error: ${error}`);
   }
 

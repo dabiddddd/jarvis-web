@@ -95,9 +95,10 @@ export async function POST(req: Request) {
             )
           );
         } catch (error: any) {
+          console.error('Stream error:', error);
           controller.enqueue(
             encoder.encode(
-              `data: ${JSON.stringify({ error: error.message })}\n\n`
+              `data: ${JSON.stringify({ error: error.message || 'Failed to get response' })}\n\n`
             )
           );
         }
